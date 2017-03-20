@@ -14,9 +14,9 @@ npm install --save framerate-utils
 ``` js
 import { fromTag, secondsToSmpte } from 'framerate-utils';
 
-const fr = FrameRate.fromTag('FPS_2397');
+const fr = fromTag('FPS_2397');
 const seconds = 100;
-const smpte = FrameRate.secondsToSmpte(fr, seconds);
+const smpte = secondsToSmpte(fr, seconds);
 
 console.log(smpte);
 // output 00:01:39:21
