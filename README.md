@@ -35,7 +35,7 @@ This `FrameRate` object has the following shape:
 {
   rate: number // The frame rate
   numerator: number // The numerator of the frame rate multiplier
-  denominator: number // The numerator of the frame rate multiplier
+  denominator: number // The denominator of the frame rate multiplier
   dropFrame: bool // drop mode, true - NTSC drop frame, false - non drop frame
   fps: number // The effective frame rate in frames per second (rate * (numerator/denominator))
 }
