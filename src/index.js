@@ -41,7 +41,7 @@ export function create(
   rate = 24,
   numerator = 1,
   denominator = 1,
-  dropFrame = false,
+  dropFrame = false
 ) {
   return {
     rate,
