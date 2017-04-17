@@ -1,6 +1,6 @@
 {
   "name": "framerate-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utilities to handle frame rate conversion and display",
   "main": "dist/index.js",
   "module": "src/index.js",
