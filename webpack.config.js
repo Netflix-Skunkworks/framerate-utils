@@ -5,14 +5,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
-    library: 'bh-framerate',
+    library: 'FrameRateUtils',
     libraryTarget: 'umd'
   },
   module: {
     loaders: [
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules)/,
         loader: 'babel-loader'
       }
     ]
