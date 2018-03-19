@@ -73,4 +73,47 @@ describe('localization/utils/FrameRate', () => {
 
     expect(FrameRate.secondsToSmpte(fr, seconds)).toEqual('00:01:39:21');
   });
+
+  it('should convert ms to seconds', () => {
+    expect(FrameRate.msToSeconds(2500)).toEqual(2.5);
+  });
+
+  it('should convert seconds to ms', () => {
+    expect(FrameRate.secondsToMs(4.123)).toEqual(4123);
+  });
+
+  it('should convert seconds to ticks', () => {
+    expect(FrameRate.secondsToTicks(2.5)).toEqual(25000000);
+    expect(FrameRate.secondsToTicks(1.23456789)).toEqual(12345678);
+  });
+
+  it('should convert ticks to seconds', () => {
+    expect(FrameRate.secondsToTicks(3.14)).toEqual(31400000);
+  });
+
+  it('should convert media to seconds', () => {
+    expect(FrameRate.mediaToSeconds('01:02:03.456')).toEqual(3723.456);
+  });
+
+  it('should convert seconds to media', () => {
+    expect(FrameRate.secondsToMedia(10921.7654)).toEqual('03:02:01.765');
+    expect(FrameRate.secondsToMedia(10921.7657)).toEqual('03:02:01.766');
+    expect(FrameRate.secondsToMedia(1.011)).toEqual('00:00:01.011');
+    expect(FrameRate.secondsToMedia(1.003)).toEqual('00:00:01.003');
+  });
+
+  it('should convert media frames to seconds', () => {
+    const fr = FrameRate.RATE_24;
+    expect(FrameRate.mediaFramesToSeconds(fr, '01:02:03:06')).toEqual(3723.25);
+  });
+
+  it('should convert seconds to media', () => {
+    const fr = FrameRate.RATE_25;
+    expect(FrameRate.secondsToMediaFrames(fr, 10921.120)).toEqual('03:02:01:03');
+    expect(FrameRate.secondsToMediaFrames(fr, 10921.800)).toEqual('03:02:01:20');
+  });
+
+  it('should convert SRT media media to seconds', () => {
+    expect(FrameRate.mediaToSeconds('01:02:03,456')).toEqual(3723.456);
+  });
 });

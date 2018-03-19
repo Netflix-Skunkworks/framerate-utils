@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,6 +86,37 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.pad = pad;
+exports.padMs = padMs;
+function pad(n) {
+  if (n < 10) {
+    return "0" + n.toString(10);
+  } else {
+    return n.toString(10);
+  }
+}
+
+function padMs(n) {
+  if (n < 10) {
+    return "00" + n.toString(10);
+  } else if (n < 100) {
+    return "0" + n.toString(10);
+  } else {
+    return n.toString(10);
+  }
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FRAME_ROUNDING = exports.DEFAULT_FRAME_RATE = exports.RATE_60 = exports.RATE_59_94_DROP = exports.RATE_59_94 = exports.RATE_50 = exports.RATE_30 = exports.RATE_29_97_DROP = exports.RATE_29_97 = exports.RATE_25 = exports.RATE_24 = exports.RATE_23_976 = exports.TICKS_PER_SECOND = exports.MILLISECONDS_PER_SECOND = exports.SECONDS_PER_MINUTE = exports.SECONDS_PER_HOUR = undefined;
 exports.create = create;
 exports.secondsToSmpte = secondsToSmpte;
 exports.smpteToSeconds = smpteToSeconds;
@@ -105,7 +136,22 @@ exports.frameToSeconds = frameToSeconds;
 exports.seekByFrames = seekByFrames;
 exports.seekToFrame = seekToFrame;
 exports.toFrameTime = toFrameTime;
+exports.mediaToSeconds = mediaToSeconds;
+exports.secondsToMedia = secondsToMedia;
+exports.mediaFramesToSeconds = mediaFramesToSeconds;
+exports.secondsToMediaFrames = secondsToMediaFrames;
+exports.ticksToSeconds = ticksToSeconds;
+exports.secondsToTicks = secondsToTicks;
+exports.msToSeconds = msToSeconds;
+exports.secondsToMs = secondsToMs;
 exports.fromTag = fromTag;
+
+var _string = __webpack_require__(0);
+
+var round = Math.round,
+    ceil = Math.ceil,
+    floor = Math.floor,
+    max = Math.max;
 var SECONDS_PER_HOUR = exports.SECONDS_PER_HOUR = 60 * 60;
 var SECONDS_PER_MINUTE = exports.SECONDS_PER_MINUTE = 60;
 var MILLISECONDS_PER_SECOND = exports.MILLISECONDS_PER_SECOND = 1000;
@@ -137,14 +183,6 @@ var DEFAULT_FRAME_RATE = exports.DEFAULT_FRAME_RATE = RATE_23_976;
  */
 var FRAME_ROUNDING = exports.FRAME_ROUNDING = 0.002;
 
-function pad(n) {
-  if (n < 10) {
-    return '0' + n.toString(10);
-  } else {
-    return n.toString(10);
-  }
-}
-
 function create() {
   var rate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 24;
   var numerator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
@@ -169,7 +207,7 @@ function smpteToSeconds(frameRate, smpte) {
 }
 
 function smpteToMs(frameRate, smpte) {
-  return Math.ceil(smpteToSeconds(frameRate, smpte) * MILLISECONDS_PER_SECOND);
+  return ceil(smpteToSeconds(frameRate, smpte) * MILLISECONDS_PER_SECOND);
 }
 
 function msToSmpte(frameRate, ms) {
@@ -177,7 +215,7 @@ function msToSmpte(frameRate, ms) {
 }
 
 function smpteToTicks(frameRate, smpte) {
-  return Math.ceil(smpteToSeconds(frameRate, smpte) * TICKS_PER_SECOND);
+  return ceil(smpteToSeconds(frameRate, smpte) * TICKS_PER_SECOND);
 }
 
 function ticksToSmpte(frameRate, ticks) {
@@ -186,7 +224,7 @@ function ticksToSmpte(frameRate, ticks) {
 
 function secondsToFrame(frameRate, seconds) {
   var frame = seconds * frameRate.fps + FRAME_ROUNDING * frameRate.fps;
-  return Math.floor(frame);
+  return floor(frame);
 }
 
 function msToFrame(frameRate, ms) {
@@ -194,7 +232,7 @@ function msToFrame(frameRate, ms) {
 }
 
 function frameToMs(frameRate, frame) {
-  return Math.ceil(frameToSeconds(frameRate, frame) * MILLISECONDS_PER_SECOND);
+  return ceil(frameToSeconds(frameRate, frame) * MILLISECONDS_PER_SECOND);
 }
 
 function ticksToFrame(frameRate, ticks) {
@@ -202,19 +240,19 @@ function ticksToFrame(frameRate, ticks) {
 }
 
 function frameToTicks(frameRate, frame) {
-  return Math.ceil(frameToSeconds(frameRate, frame) * TICKS_PER_SECOND);
+  return ceil(frameToSeconds(frameRate, frame) * TICKS_PER_SECOND);
 }
 
 function frameToSmpte(frameRate, frame) {
   var extra = extraFrames(frameRate, frame);
   var seconds = (frame + extra) / frameRate.rate;
-  var f = Math.round((seconds - Math.floor(seconds)) * frameRate.rate);
-  var h = Math.floor(seconds / SECONDS_PER_HOUR);
-  var m = Math.floor(seconds % SECONDS_PER_HOUR / SECONDS_PER_MINUTE);
-  var s = Math.floor(seconds % SECONDS_PER_MINUTE);
+  var f = round((seconds - floor(seconds)) * frameRate.rate);
+  var h = floor(seconds / SECONDS_PER_HOUR);
+  var m = floor(seconds % SECONDS_PER_HOUR / SECONDS_PER_MINUTE);
+  var s = floor(seconds % SECONDS_PER_MINUTE);
   var frameSeparator = frameRate.dropFrame ? ';' : ':';
 
-  return pad(h) + ':' + pad(m) + ':' + pad(s) + frameSeparator + pad(f);
+  return (0, _string.pad)(h) + ':' + (0, _string.pad)(m) + ':' + (0, _string.pad)(s) + frameSeparator + (0, _string.pad)(f);
 }
 
 /**
@@ -233,10 +271,10 @@ function extraFrames(frameRate, frame) {
     return 0;
   }
 
-  var D = Math.floor(frame / 17982);
+  var D = floor(frame / 17982);
   var M = frame % 17982;
 
-  return Math.max(0, 18 * D + 2 * Math.floor((M - 2) / 1798));
+  return max(0, 18 * D + 2 * floor((M - 2) / 1798));
 }
 
 function smpteToFrame(frameRate, smpte) {
@@ -264,7 +302,7 @@ function smpteToFrame(frameRate, smpte) {
   var frames = seconds * frameRate.rate + f;
 
   if (frameRate.dropFrame) {
-    var dropped = (h * 54 + m - Math.floor(m / 10)) * 2;
+    var dropped = (h * 54 + m - floor(m / 10)) * 2;
 
     frames -= dropped;
   }
@@ -291,6 +329,82 @@ function seekToFrame(frameRate, frame) {
 
 function toFrameTime(frameRate, seconds) {
   return seekByFrames(frameRate, seconds, 0);
+}
+
+function mediaToSeconds(media) {
+  var parts = media.split(/:|\.|,/);
+  var h = void 0,
+      m = void 0,
+      s = void 0,
+      ms = void 0;
+
+  if (parts.length === 4) {
+    h = parseInt(parts[0]);
+    m = parseInt(parts[1]);
+    s = parseInt(parts[2]);
+    ms = parseInt(parts[3]);
+  } else {
+    return 0;
+  }
+
+  var seconds = h * SECONDS_PER_HOUR + m * SECONDS_PER_MINUTE + s;
+  return seconds + ms / 1000;
+}
+
+function secondsToMedia(seconds) {
+  var sec = floor(seconds);
+  var ms = round((seconds - sec) * MILLISECONDS_PER_SECOND);
+  var h = floor(sec / SECONDS_PER_HOUR);
+  var m = floor(sec % SECONDS_PER_HOUR / SECONDS_PER_MINUTE);
+  var s = floor(sec % SECONDS_PER_MINUTE);
+
+  return (0, _string.pad)(h) + ':' + (0, _string.pad)(m) + ':' + (0, _string.pad)(s) + '.' + (0, _string.padMs)(ms);
+}
+
+function mediaFramesToSeconds(fr, media) {
+  var parts = media.split(/:/);
+  var h = void 0,
+      m = void 0,
+      s = void 0,
+      f = void 0;
+
+  if (parts.length === 4) {
+    h = parseInt(parts[0]);
+    m = parseInt(parts[1]);
+    s = parseInt(parts[2]);
+    f = parseInt(parts[3]);
+  } else {
+    return 0;
+  }
+
+  var seconds = h * SECONDS_PER_HOUR + m * SECONDS_PER_MINUTE + s;
+  return seconds + f / fr.fps;
+}
+
+function secondsToMediaFrames(fr, seconds) {
+  var sec = floor(seconds);
+  var f = round((seconds - sec) * fr.fps);
+  var h = floor(sec / SECONDS_PER_HOUR);
+  var m = floor(sec % SECONDS_PER_HOUR / SECONDS_PER_MINUTE);
+  var s = floor(sec % SECONDS_PER_MINUTE);
+
+  return (0, _string.pad)(h) + ':' + (0, _string.pad)(m) + ':' + (0, _string.pad)(s) + ':' + (0, _string.pad)(f);
+}
+
+function ticksToSeconds(ticks) {
+  return ticks / TICKS_PER_SECOND;
+}
+
+function secondsToTicks(seconds) {
+  return floor(seconds * TICKS_PER_SECOND);
+}
+
+function msToSeconds(ms) {
+  return ms / MILLISECONDS_PER_SECOND;
+}
+
+function secondsToMs(seconds) {
+  return seconds * MILLISECONDS_PER_SECOND;
 }
 
 function fromTag(tag) {
