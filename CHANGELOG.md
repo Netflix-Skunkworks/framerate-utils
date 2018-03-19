@@ -1,3 +1,10 @@
+# 3.0.0
+
+- Added media time conversion (ms and frames)
+- Added more tick conversion methods
+- Support SRT media format
+- Moved repository to Netflix skunkworks
+
 # 2.0.0
 
 - Major bump due to breaking change. The exported global variable goes from
