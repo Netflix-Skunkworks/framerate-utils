@@ -173,12 +173,21 @@ export function frameToSeconds(frameRate, frame)
   return frame / frameRate.fps;
 }
 
+// Seek to a position by frame delta relative to the current time in seconds.
+// The algorithm has been modified to work better with adaptive streaming
+// video. The offsets in the video matter to get a frame in roughly the correct
+// spot.
 export function seekByFrames(frameRate, fromTimeSeconds, frameDelta)
 {
-  const frame = secondsToFrame(frameRate, fromTimeSeconds);
-  return seekToFrame(frameRate, frame + frameDelta);
+  const modifier = frameDelta < 0 ? -1 : 1;
+  const halfFrame = modifier * (frameToSeconds(frameRate, 1) / 2);
+  const frameSeconds = frameToSeconds(frameRate, frameDelta);
+
+  // add half frame to ensure the resulting time is in the frame
+  return fromTimeSeconds + frameSeconds + halfFrame;
 }
 
+// Seek to an exact frame in the video
 export function seekToFrame(frameRate, frame)
 {
   const newTime = frameToSeconds(frameRate, frame);
@@ -292,6 +301,6 @@ export function fromTag(tag) {
     case 'FPS_6000':
       return RATE_60;
     default:
-      throw `Unknow Frame Rate ${tag}`;
+      throw new TypeError('Unknown Frame Rate', tag);
   }
 }
