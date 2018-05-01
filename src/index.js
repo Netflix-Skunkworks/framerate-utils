@@ -292,6 +292,6 @@ export function fromTag(tag) {
     case 'FPS_6000':
       return RATE_60;
     default:
-      throw `Unknow Frame Rate ${tag}`;
+      throw new TypeError('Unknown Frame Rate', tag);
   }
 }
