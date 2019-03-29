@@ -116,7 +116,7 @@ function padMs(n) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FRAME_ROUNDING = exports.DEFAULT_FRAME_RATE = exports.RATE_60 = exports.RATE_59_94_DROP = exports.RATE_59_94 = exports.RATE_50 = exports.RATE_30 = exports.RATE_29_97_DROP = exports.RATE_29_97 = exports.RATE_25 = exports.RATE_24 = exports.RATE_23_976 = exports.TICKS_PER_SECOND = exports.MILLISECONDS_PER_SECOND = exports.SECONDS_PER_MINUTE = exports.SECONDS_PER_HOUR = undefined;
+exports.FRAME_ROUNDING = exports.DEFAULT_FRAME_RATE = exports.RATE_60 = exports.RATE_59_94_DROP = exports.RATE_59_94 = exports.RATE_50 = exports.RATE_48 = exports.RATE_30 = exports.RATE_29_97_DROP = exports.RATE_29_97 = exports.RATE_25 = exports.RATE_24 = exports.RATE_23_976 = exports.TICKS_PER_SECOND = exports.MILLISECONDS_PER_SECOND = exports.SECONDS_PER_MINUTE = exports.SECONDS_PER_HOUR = undefined;
 exports.create = create;
 exports.secondsToSmpte = secondsToSmpte;
 exports.smpteToSeconds = smpteToSeconds;
@@ -163,6 +163,7 @@ var RATE_25 = exports.RATE_25 = create(25, 1, 1);
 var RATE_29_97 = exports.RATE_29_97 = create(30, 1000, 1001);
 var RATE_29_97_DROP = exports.RATE_29_97_DROP = create(30, 1000, 1001, true);
 var RATE_30 = exports.RATE_30 = create(30, 1, 1);
+var RATE_48 = exports.RATE_48 = create(48, 1, 1);
 var RATE_50 = exports.RATE_50 = create(50, 1, 1);
 var RATE_59_94 = exports.RATE_59_94 = create(60, 1000, 1001);
 var RATE_59_94_DROP = exports.RATE_59_94_DROP = create(60, 1000, 1001, true);
@@ -425,6 +426,8 @@ function fromTag(tag) {
       return RATE_30;
     case 'FPS_3000':
       return RATE_30;
+    case 'FPS_4800':
+      return RATE_48;
     case 'FPS_50':
       return RATE_50;
     case 'FPS_5000':
@@ -436,7 +439,7 @@ function fromTag(tag) {
     case 'FPS_6000':
       return RATE_60;
     default:
-      throw 'Unknow Frame Rate ' + tag;
+      throw new TypeError('Unknown Frame Rate', tag);
   }
 }
 

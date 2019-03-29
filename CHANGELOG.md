@@ -1,3 +1,8 @@
+# 3.0.1
+
+- Fixed error message typo
+- Added 48fps
+
 # 3.0.0
 
 - Added media time conversion (ms and frames)
