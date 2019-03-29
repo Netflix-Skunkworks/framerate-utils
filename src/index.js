@@ -13,6 +13,7 @@ export const RATE_25 = create(25, 1, 1);
 export const RATE_29_97 = create(30, 1000, 1001);
 export const RATE_29_97_DROP = create(30, 1000, 1001, true);
 export const RATE_30 = create(30, 1, 1);
+export const RATE_48 = create(48, 1, 1);
 export const RATE_50 = create(50, 1, 1);
 export const RATE_59_94 = create(60, 1000, 1001);
 export const RATE_59_94_DROP = create(60, 1000, 1001, true);
@@ -281,6 +282,8 @@ export function fromTag(tag) {
       return RATE_30;
     case 'FPS_3000':
       return RATE_30;
+    case 'FPS_4800':
+      return RATE_48;
     case 'FPS_50':
       return RATE_50;
     case 'FPS_5000':
