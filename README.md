@@ -64,4 +64,4 @@ const frameRate = create();
 - `smpteToMs` - Returns SMPTE time converted to milliseconds.
 - `msToSmpte` - Returns milliseconds converted to SMPTE time.
 
-For all functions view the `src/index.js` file.
+For all functions view the `src/index.ts` file.
