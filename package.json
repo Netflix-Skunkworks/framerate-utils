@@ -1,11 +1,36 @@
 {
   "name": "framerate-utils",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "Utilities to handle frame rate conversion and display",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "test": "jest"
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
   },
   "repository": {
     "type": "git",
@@ -18,12 +43,23 @@
     }
   ],
   "license": "MIT",
+  "module": "dist/framerate-utils.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/framerate-utils.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/framerate-utils.esm.js",
+      "limit": "10 KB"
+    }
+  ],
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-jest": "^23.0.0-alpha.0",
-    "babel-loader": "^7.1.4",
-    "babel-preset-es2015": "^6.24.1",
-    "jest": "^22.4.2",
-    "webpack": "^2.2.1"
+    "@size-limit/preset-small-lib": "^6.0.4",
+    "husky": "^7.0.4",
+    "size-limit": "^6.0.4",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
   }
 }

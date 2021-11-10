@@ -1,13 +1,12 @@
 import * as FrameRate from '../src/index';
 
 describe('localization/utils/FrameRate', () => {
-
   it('should convert 00:00:10:01 correctly', () => {
-    const fr      = FrameRate.RATE_23_976;
-    const frame   = FrameRate.secondsToFrame(fr, 10.052);
-    const actual  = FrameRate.toFrameTime(fr, 10.052);
+    const fr = FrameRate.RATE_23_976;
+    const frame = FrameRate.secondsToFrame(fr, 10.052);
+    const actual = FrameRate.toFrameTime(fr, 10.052);
     const rounded = Math.round(actual * 100) / 100;
-    const smpte   = FrameRate.secondsToSmpte(fr, actual);
+    const smpte = FrameRate.secondsToSmpte(fr, actual);
 
     expect(frame).toEqual(241);
     expect(rounded).toEqual(10.07);
@@ -15,19 +14,19 @@ describe('localization/utils/FrameRate', () => {
   });
 
   it('should convert 00:00:23:03 correctly', () => {
-    const fr      = FrameRate.RATE_23_976;
-    const frame   = FrameRate.secondsToFrame(fr, 23.149);
-    const actual  = FrameRate.toFrameTime(fr, 23.149);
+    const fr = FrameRate.RATE_23_976;
+    const frame = FrameRate.secondsToFrame(fr, 23.149);
+    const actual = FrameRate.toFrameTime(fr, 23.149);
     const rounded = Math.round(actual * 100) / 100;
-    const smpte   = FrameRate.secondsToSmpte(fr, actual);
+    const smpte = FrameRate.secondsToSmpte(fr, actual);
 
     expect(frame).toEqual(555);
-    expect(rounded).toEqual(23.170);
+    expect(rounded).toEqual(23.17);
     expect(smpte).toEqual('00:00:23:03');
   });
 
   it('should convert 00:00:01:00 correctly', () => {
-    const fr      = FrameRate.RATE_23_976;
+    const fr = FrameRate.RATE_23_976;
     const frame23 = FrameRate.secondsToFrame(fr, 0.998);
     const frame24 = FrameRate.secondsToFrame(fr, 1.001);
 
@@ -42,9 +41,9 @@ describe('localization/utils/FrameRate', () => {
   });
 
   it('should avoid rounding error on frame to ms', () => {
-    const fr     = FrameRate.RATE_23_976;
-    const frame  = 473;
-    const ms     = FrameRate.frameToMs(fr, frame);
+    const fr = FrameRate.RATE_23_976;
+    const frame = 473;
+    const ms = FrameRate.frameToMs(fr, frame);
     const actual = FrameRate.msToFrame(fr, ms);
 
     expect(actual).toEqual(frame);
@@ -109,8 +108,8 @@ describe('localization/utils/FrameRate', () => {
 
   it('should convert seconds to media', () => {
     const fr = FrameRate.RATE_25;
-    expect(FrameRate.secondsToMediaFrames(fr, 10921.120)).toEqual('03:02:01:03');
-    expect(FrameRate.secondsToMediaFrames(fr, 10921.800)).toEqual('03:02:01:20');
+    expect(FrameRate.secondsToMediaFrames(fr, 10921.12)).toEqual('03:02:01:03');
+    expect(FrameRate.secondsToMediaFrames(fr, 10921.8)).toEqual('03:02:01:20');
   });
 
   it('should convert SRT media media to seconds', () => {

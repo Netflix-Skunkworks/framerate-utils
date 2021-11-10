@@ -34,82 +34,81 @@ export const DEFAULT_FRAME_RATE = RATE_23_976;
  */
 export const FRAME_ROUNDING = 0.002;
 
+export interface FrameRate {
+  rate: number;
+  numerator: number;
+  denominator: number;
+  fps: number;
+  dropFrame: boolean;
+}
+
 export function create(
   rate = 24,
   numerator = 1,
   denominator = 1,
   dropFrame = false
-) {
+): FrameRate {
   return {
     rate,
     numerator,
     denominator,
-    fps: rate * numerator / denominator,
+    fps: (rate * numerator) / denominator,
     dropFrame,
   };
 }
 
-export function secondsToSmpte(frameRate, seconds) {
+export function secondsToSmpte(frameRate: FrameRate, seconds: number) {
   return frameToSmpte(frameRate, secondsToFrame(frameRate, seconds));
 }
 
-export function smpteToSeconds(frameRate, smpte) {
+export function smpteToSeconds(frameRate: FrameRate, smpte: string) {
   return frameToSeconds(frameRate, smpteToFrame(frameRate, smpte));
 }
 
-export function smpteToMs(frameRate, smpte) {
+export function smpteToMs(frameRate: FrameRate, smpte: string) {
   return ceil(smpteToSeconds(frameRate, smpte) * MILLISECONDS_PER_SECOND);
 }
 
-export function msToSmpte(frameRate, ms)
-{
+export function msToSmpte(frameRate: FrameRate, ms: number) {
   return secondsToSmpte(frameRate, ms / MILLISECONDS_PER_SECOND);
 }
 
-export function smpteToTicks(frameRate, smpte)
-{
+export function smpteToTicks(frameRate: FrameRate, smpte: string) {
   return ceil(smpteToSeconds(frameRate, smpte) * TICKS_PER_SECOND);
 }
 
-export function ticksToSmpte(frameRate, ticks)
-{
+export function ticksToSmpte(frameRate: FrameRate, ticks: number) {
   return secondsToSmpte(frameRate, ticks / TICKS_PER_SECOND);
 }
 
-export function secondsToFrame(frameRate, seconds)
-{
-  const frame = (seconds * frameRate.fps) + (FRAME_ROUNDING * frameRate.fps);
+export function secondsToFrame(frameRate: FrameRate, seconds: number) {
+  const frame = seconds * frameRate.fps + FRAME_ROUNDING * frameRate.fps;
   return floor(frame);
 }
 
-export function msToFrame(frameRate, ms)
-{
+export function msToFrame(frameRate: FrameRate, ms: number) {
   return secondsToFrame(frameRate, ms / MILLISECONDS_PER_SECOND);
 }
 
-export function frameToMs(frameRate, frame)
-{
+export function frameToMs(frameRate: FrameRate, frame: number) {
   return ceil(frameToSeconds(frameRate, frame) * MILLISECONDS_PER_SECOND);
 }
 
-export function ticksToFrame(frameRate, ticks)
-{
+export function ticksToFrame(frameRate: FrameRate, ticks: number) {
   return secondsToFrame(frameRate, ticks / TICKS_PER_SECOND);
 }
 
-export function frameToTicks(frameRate, frame)
-{
+export function frameToTicks(frameRate: FrameRate, frame: number) {
   return ceil(frameToSeconds(frameRate, frame) * TICKS_PER_SECOND);
 }
 
-export function frameToSmpte(frameRate, frame)
-{
+export function frameToSmpte(frameRate: FrameRate, frame: number) {
   const extra = extraFrames(frameRate, frame);
   const seconds = (frame + extra) / frameRate.rate;
   const f = round((seconds - floor(seconds)) * frameRate.rate);
   const h = floor(seconds / SECONDS_PER_HOUR);
   const m = floor((seconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
-  const s = floor((seconds % SECONDS_PER_MINUTE));
+  const s = floor(seconds % SECONDS_PER_MINUTE);
   const frameSeparator = frameRate.dropFrame ? ';' : ':';
 
   return `${pad(h)}:${pad(m)}:${pad(s)}${frameSeparator}${pad(f)}`;
@@ -123,11 +122,11 @@ export function frameToSmpte(frameRate, frame)
  *          M = frameNumber mod 17982
  *          frameNumber +=  18*D + 2*((M - 2) div 1798)
  *
+ * @param {FrameRate} frameRate The frame rate to use for conversion
  * @param {Number} frame The actual number of frames
  * @returns {Number} The extra frames required
  */
-export function extraFrames(frameRate, frame)
-{
+export function extraFrames(frameRate: FrameRate, frame: number) {
   if (!frameRate.dropFrame) {
     return 0;
   }
@@ -135,11 +134,10 @@ export function extraFrames(frameRate, frame)
   const D = floor(frame / 17982);
   const M = frame % 17982;
 
-  return max(0, (18 * D) + (2 * (floor((M - 2) / 1798))));
+  return max(0, 18 * D + 2 * floor((M - 2) / 1798));
 }
 
-export function smpteToFrame(frameRate, smpte)
-{
+export function smpteToFrame(frameRate: FrameRate, smpte: string) {
   const parts = smpte.split(/:|;/);
   let h, m, s, f;
 
@@ -157,8 +155,8 @@ export function smpteToFrame(frameRate, smpte)
     return 0;
   }
 
-  const seconds = (h * SECONDS_PER_HOUR) + (m * SECONDS_PER_MINUTE) + s;
-  let frames = (seconds * frameRate.rate) + f;
+  const seconds = h * SECONDS_PER_HOUR + m * SECONDS_PER_MINUTE + s;
+  let frames = seconds * frameRate.rate + f;
 
   if (frameRate.dropFrame) {
     const dropped = (h * 54 + m - floor(m / 10)) * 2;
@@ -169,19 +167,20 @@ export function smpteToFrame(frameRate, smpte)
   return frames;
 }
 
-export function frameToSeconds(frameRate, frame)
-{
+export function frameToSeconds(frameRate: FrameRate, frame: number) {
   return frame / frameRate.fps;
 }
 
-export function seekByFrames(frameRate, fromTimeSeconds, frameDelta)
-{
+export function seekByFrames(
+  frameRate: FrameRate,
+  fromTimeSeconds: number,
+  frameDelta: number
+) {
   const frame = secondsToFrame(frameRate, fromTimeSeconds);
   return seekToFrame(frameRate, frame + frameDelta);
 }
 
-export function seekToFrame(frameRate, frame)
-{
+export function seekToFrame(frameRate: FrameRate, frame: number) {
   const newTime = frameToSeconds(frameRate, frame);
   const halfFrame = frameToSeconds(frameRate, 1) / 2;
 
@@ -189,12 +188,11 @@ export function seekToFrame(frameRate, frame)
   return newTime + halfFrame;
 }
 
-export function toFrameTime(frameRate, seconds)
-{
+export function toFrameTime(frameRate: FrameRate, seconds: number) {
   return seekByFrames(frameRate, seconds, 0);
 }
 
-export function mediaToSeconds(media) {
+export function mediaToSeconds(media: string) {
   const parts = media.split(/:|\.|,/);
   let h, m, s, ms;
 
@@ -211,17 +209,17 @@ export function mediaToSeconds(media) {
   return seconds + ms / 1000;
 }
 
-export function secondsToMedia(seconds) {
+export function secondsToMedia(seconds: number) {
   var sec = floor(seconds);
   var ms = round((seconds - sec) * MILLISECONDS_PER_SECOND);
   var h = floor(sec / SECONDS_PER_HOUR);
-  var m = floor(sec % SECONDS_PER_HOUR / SECONDS_PER_MINUTE);
+  var m = floor((sec % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
   var s = floor(sec % SECONDS_PER_MINUTE);
 
   return pad(h) + ':' + pad(m) + ':' + pad(s) + '.' + padMs(ms);
 }
 
-export function mediaFramesToSeconds(fr, media) {
+export function mediaFramesToSeconds(fr: FrameRate, media: string) {
   var parts = media.split(/:/);
   let h, m, s, f;
 
@@ -238,33 +236,33 @@ export function mediaFramesToSeconds(fr, media) {
   return seconds + f / fr.fps;
 }
 
-export function secondsToMediaFrames(fr, seconds) {
+export function secondsToMediaFrames(fr: FrameRate, seconds: number) {
   var sec = floor(seconds);
   var f = round((seconds - sec) * fr.fps);
   var h = floor(sec / SECONDS_PER_HOUR);
-  var m = floor(sec % SECONDS_PER_HOUR / SECONDS_PER_MINUTE);
+  var m = floor((sec % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
   var s = floor(sec % SECONDS_PER_MINUTE);
 
   return pad(h) + ':' + pad(m) + ':' + pad(s) + ':' + pad(f);
 }
 
-export function ticksToSeconds(ticks) {
+export function ticksToSeconds(ticks: number) {
   return ticks / TICKS_PER_SECOND;
 }
 
-export function secondsToTicks(seconds) {
+export function secondsToTicks(seconds: number) {
   return floor(seconds * TICKS_PER_SECOND);
 }
 
-export function msToSeconds(ms) {
+export function msToSeconds(ms: number) {
   return ms / MILLISECONDS_PER_SECOND;
 }
 
-export function secondsToMs(seconds) {
+export function secondsToMs(seconds: number) {
   return seconds * MILLISECONDS_PER_SECOND;
 }
 
-export function fromTag(tag) {
+export function fromTag(tag: string) {
   switch (tag) {
     case 'FPS_2397':
       return RATE_23_976;
@@ -295,6 +293,6 @@ export function fromTag(tag) {
     case 'FPS_6000':
       return RATE_60;
     default:
-      throw new TypeError('Unknown Frame Rate', tag);
+      throw new TypeError(`Unknown Frame Rate ${tag}`);
   }
 }
