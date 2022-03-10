@@ -132,7 +132,11 @@ export function extraFrames(frameRate: FrameRate, frame: number) {
   }
 
   const D = floor(frame / 17982);
-  const M = frame % 17982;
+  let M = frame % 17982;
+  if (M < 2) {
+    // Special case for M=0 and M=1: -2 div 1798 should be 0
+    M = 2;
+  }
 
   return max(0, 18 * D + 2 * floor((M - 2) / 1798));
 }

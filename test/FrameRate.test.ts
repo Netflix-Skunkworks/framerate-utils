@@ -1,6 +1,37 @@
 import * as FrameRate from '../src/index';
 
 describe('localization/utils/FrameRate', () => {
+  it('should convert drop frame to smpte correctly', () => {
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 1798)).toEqual(
+      '00:00:59;28'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 1799)).toEqual(
+      '00:00:59;29'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 1800)).toEqual(
+      '00:01:00;02'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 1801)).toEqual(
+      '00:01:00;03'
+    );
+
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 17980)).toEqual(
+      '00:09:59;28'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 17981)).toEqual(
+      '00:09:59;29'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 17982)).toEqual(
+      '00:10:00;00'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 17983)).toEqual(
+      '00:10:00;01'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 17984)).toEqual(
+      '00:10:00;02'
+    );
+  });
+
   it('should convert 00:00:10:01 correctly', () => {
     const fr = FrameRate.RATE_23_976;
     const frame = FrameRate.secondsToFrame(fr, 10.052);

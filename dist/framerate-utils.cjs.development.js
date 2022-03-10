@@ -141,6 +141,12 @@ function extraFrames(frameRate, frame) {
 
   var D = floor(frame / 17982);
   var M = frame % 17982;
+
+  if (M < 2) {
+    // Special case for M=0 and M=1: -2 div 1798 should be 0
+    M = 2;
+  }
+
   return max(0, 18 * D + 2 * floor((M - 2) / 1798));
 }
 function smpteToFrame(frameRate, smpte) {
