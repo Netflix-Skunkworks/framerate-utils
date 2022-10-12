@@ -42,6 +42,8 @@ export declare function frameToSmpte(frameRate: FrameRate, frame: number): strin
  *          D = frameNumber div 17982
  *          M = frameNumber mod 17982
  *          frameNumber +=  18*D + 2*((M - 2) div 1798)
+ * See also https://video.stackexchange.com/questions/22722/how-are-frames-in-59-94-drop-frame-timecode-dropped/22724#22724
+ * for support for 59.94fps
  *
  * @param {FrameRate} frameRate The frame rate to use for conversion
  * @param {Number} frame The actual number of frames
