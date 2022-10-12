@@ -128,6 +128,8 @@ function frameToSmpte(frameRate, frame) {
  *          D = frameNumber div 17982
  *          M = frameNumber mod 17982
  *          frameNumber +=  18*D + 2*((M - 2) div 1798)
+ * See also https://video.stackexchange.com/questions/22722/how-are-frames-in-59-94-drop-frame-timecode-dropped/22724#22724
+ * for support for 59.94fps
  *
  * @param {FrameRate} frameRate The frame rate to use for conversion
  * @param {Number} frame The actual number of frames
@@ -139,15 +141,23 @@ function extraFrames(frameRate, frame) {
     return 0;
   }
 
-  var D = floor(frame / 17982);
-  var M = frame % 17982;
+  var framesPer10Mins = 17982;
+  var dropFrames = 2;
 
-  if (M < 2) {
-    // Special case for M=0 and M=1: -2 div 1798 should be 0
-    M = 2;
+  if (frameRate.rate === 60) {
+    framesPer10Mins = 35964;
+    dropFrames = 4;
   }
 
-  return max(0, 18 * D + 2 * floor((M - 2) / 1798));
+  var D = floor(frame / framesPer10Mins);
+  var M = frame % framesPer10Mins;
+
+  if (M < dropFrames) {
+    // Special case for M=0 and M=1: -2 div 1798 should be 0
+    M = dropFrames;
+  }
+
+  return max(0, 9 * dropFrames * D + dropFrames * floor((M - dropFrames) / floor(framesPer10Mins / 10)));
 }
 function smpteToFrame(frameRate, smpte) {
   var parts = smpte.split(/:|;/);
@@ -171,7 +181,7 @@ function smpteToFrame(frameRate, smpte) {
   var frames = seconds * frameRate.rate + f;
 
   if (frameRate.dropFrame) {
-    var dropped = (h * 54 + m - floor(m / 10)) * 2;
+    var dropped = extraFrames(frameRate, frames);
     frames -= dropped;
   }
 

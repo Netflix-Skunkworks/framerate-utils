@@ -32,6 +32,99 @@ describe('localization/utils/FrameRate', () => {
     );
   });
 
+  it('should convert smpte to drop frame correctly', () => {
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:00:59;28')
+    ).toEqual(1798);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:00:59;29')
+    ).toEqual(1799);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:01:00;02')
+    ).toEqual(1800);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:01:00;03')
+    ).toEqual(1801);
+
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:09:59;28')
+    ).toEqual(17980);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:09:59;29')
+    ).toEqual(17981);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:10:00;00')
+    ).toEqual(17982);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:10:00;01')
+    ).toEqual(17983);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:10:00;02')
+    ).toEqual(17984);
+  });
+
+  it('should convert 59.94 drop frame to smpte correctly', () => {
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 3598)).toEqual(
+      '00:00:59;58'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 3599)).toEqual(
+      '00:00:59;59'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 3600)).toEqual(
+      '00:01:00;04'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 3601)).toEqual(
+      '00:01:00;05'
+    );
+
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 35962)).toEqual(
+      '00:09:59;58'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 35963)).toEqual(
+      '00:09:59;59'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 35964)).toEqual(
+      '00:10:00;00'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 35965)).toEqual(
+      '00:10:00;01'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 35966)).toEqual(
+      '00:10:00;02'
+    );
+  });
+
+  it('should convert 59.94 smpte to drop frame correctly', () => {
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:00:59;58')
+    ).toEqual(3598);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:00:59;59')
+    ).toEqual(3599);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:01:00;04')
+    ).toEqual(3600);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:01:00;05')
+    ).toEqual(3601);
+
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:09:59;58')
+    ).toEqual(35962);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:09:59;59')
+    ).toEqual(35963);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:10:00;00')
+    ).toEqual(35964);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:10:00;01')
+    ).toEqual(35965);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:10:00;02')
+    ).toEqual(35966);
+  });
+
   it('should convert 00:00:10:01 correctly', () => {
     const fr = FrameRate.RATE_23_976;
     const frame = FrameRate.secondsToFrame(fr, 10.052);
