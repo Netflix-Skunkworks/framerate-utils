@@ -117,6 +117,10 @@ function frameToSmpte(frameRate, frame) {
   var frameSeparator = frameRate.dropFrame ? ';' : ':';
   return pad(h) + ":" + pad(m) + ":" + pad(s) + frameSeparator + pad(f);
 }
+
+function div(dividend, divisor) {
+  return Math.floor(dividend / divisor);
+}
 /**
  * Return the number of extra frames required to convert drop frame to
  * SMPTE timecode.
@@ -132,6 +136,7 @@ function frameToSmpte(frameRate, frame) {
  * @returns {Number} The extra frames required
  */
 
+
 function extraFrames(frameRate, frame) {
   if (!frameRate.dropFrame) {
     return 0;
@@ -145,7 +150,7 @@ function extraFrames(frameRate, frame) {
     dropFrames = 4;
   }
 
-  var D = floor(frame / framesPer10Mins);
+  var D = div(frame, framesPer10Mins);
   var M = frame % framesPer10Mins;
 
   if (M < dropFrames) {
@@ -153,7 +158,28 @@ function extraFrames(frameRate, frame) {
     M = dropFrames;
   }
 
-  return max(0, 9 * dropFrames * D + dropFrames * floor((M - dropFrames) / floor(framesPer10Mins / 10)));
+  return max(0, 9 * dropFrames * D + dropFrames * div(M - dropFrames, div(framesPer10Mins, 10)));
+} // Return the number of frames to subtract to convert smpte drop frame
+// back to frame number.
+// http://andrewduncan.net/timecodes/
+// totalMinutes = 60 * hours + minutes
+// frameNumber  = 108000 * hours + 1800 * minutes
+//                  + 30 * seconds + frames
+//                   - 2 * (totalMinutes - totalMinutes div 10)
+
+function subtractFrames(frameRate, h, m) {
+  if (!frameRate.dropFrame) {
+    return 0;
+  }
+
+  var dropFrames = 2;
+
+  if (frameRate.rate === 60) {
+    dropFrames = 4;
+  }
+
+  var totalMinutes = h * 60 + m;
+  return dropFrames * (totalMinutes - div(totalMinutes, 10));
 }
 function smpteToFrame(frameRate, smpte) {
   var parts = smpte.split(/:|;/);
@@ -175,13 +201,7 @@ function smpteToFrame(frameRate, smpte) {
 
   var seconds = h * SECONDS_PER_HOUR + m * SECONDS_PER_MINUTE + s;
   var frames = seconds * frameRate.rate + f;
-
-  if (frameRate.dropFrame) {
-    var dropped = extraFrames(frameRate, frames);
-    frames -= dropped;
-  }
-
-  return frames;
+  return frames - subtractFrames(frameRate, h, m);
 }
 function frameToSeconds(frameRate, frame) {
   return frame / frameRate.fps;
@@ -308,5 +328,5 @@ function fromTag(tag) {
   }
 }
 
-export { DEFAULT_FRAME_RATE, FRAME_ROUNDING, MILLISECONDS_PER_SECOND, RATE_23_976, RATE_24, RATE_25, RATE_29_97, RATE_29_97_DROP, RATE_30, RATE_48, RATE_50, RATE_59_94, RATE_59_94_DROP, RATE_60, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, TICKS_PER_SECOND, create, extraFrames, frameToMs, frameToSeconds, frameToSmpte, frameToTicks, fromTag, mediaFramesToSeconds, mediaToSeconds, msToFrame, msToSeconds, msToSmpte, secondsToFrame, secondsToMedia, secondsToMediaFrames, secondsToMs, secondsToSmpte, secondsToTicks, seekByFrames, seekToFrame, smpteToFrame, smpteToMs, smpteToSeconds, smpteToTicks, ticksToFrame, ticksToSeconds, ticksToSmpte, toFrameTime };
+export { DEFAULT_FRAME_RATE, FRAME_ROUNDING, MILLISECONDS_PER_SECOND, RATE_23_976, RATE_24, RATE_25, RATE_29_97, RATE_29_97_DROP, RATE_30, RATE_48, RATE_50, RATE_59_94, RATE_59_94_DROP, RATE_60, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, TICKS_PER_SECOND, create, extraFrames, frameToMs, frameToSeconds, frameToSmpte, frameToTicks, fromTag, mediaFramesToSeconds, mediaToSeconds, msToFrame, msToSeconds, msToSmpte, secondsToFrame, secondsToMedia, secondsToMediaFrames, secondsToMs, secondsToSmpte, secondsToTicks, seekByFrames, seekToFrame, smpteToFrame, smpteToMs, smpteToSeconds, smpteToTicks, subtractFrames, ticksToFrame, ticksToSeconds, ticksToSmpte, toFrameTime };
 //# sourceMappingURL=framerate-utils.esm.js.map

@@ -14,7 +14,15 @@ describe('localization/utils/FrameRate', () => {
     expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 1801)).toEqual(
       '00:01:00;03'
     );
-
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 8990)).toEqual(
+      '00:04:59;28'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 8991)).toEqual(
+      '00:04:59;29'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 8992)).toEqual(
+      '00:05:00;02'
+    );
     expect(FrameRate.frameToSmpte(FrameRate.RATE_29_97_DROP, 17980)).toEqual(
       '00:09:59;28'
     );
@@ -45,7 +53,15 @@ describe('localization/utils/FrameRate', () => {
     expect(
       FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:01:00;03')
     ).toEqual(1801);
-
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:04:59;28')
+    ).toEqual(8990);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:04:59;29')
+    ).toEqual(8991);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:05:00;02')
+    ).toEqual(8992);
     expect(
       FrameRate.smpteToFrame(FrameRate.RATE_29_97_DROP, '00:09:59;28')
     ).toEqual(17980);
@@ -76,7 +92,15 @@ describe('localization/utils/FrameRate', () => {
     expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 3601)).toEqual(
       '00:01:00;05'
     );
-
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 17982)).toEqual(
+      '00:04:59;58'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 17983)).toEqual(
+      '00:04:59;59'
+    );
+    expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 17984)).toEqual(
+      '00:05:00;04'
+    );
     expect(FrameRate.frameToSmpte(FrameRate.RATE_59_94_DROP, 35962)).toEqual(
       '00:09:59;58'
     );
@@ -107,7 +131,15 @@ describe('localization/utils/FrameRate', () => {
     expect(
       FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:01:00;05')
     ).toEqual(3601);
-
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:04:59;58')
+    ).toEqual(17982);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:04:59;59')
+    ).toEqual(17983);
+    expect(
+      FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:05:00;04')
+    ).toEqual(17984);
     expect(
       FrameRate.smpteToFrame(FrameRate.RATE_59_94_DROP, '00:09:59;58')
     ).toEqual(35962);

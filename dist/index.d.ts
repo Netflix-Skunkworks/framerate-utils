@@ -50,6 +50,7 @@ export declare function frameToSmpte(frameRate: FrameRate, frame: number): strin
  * @returns {Number} The extra frames required
  */
 export declare function extraFrames(frameRate: FrameRate, frame: number): number;
+export declare function subtractFrames(frameRate: FrameRate, h: number, m: number): number;
 export declare function smpteToFrame(frameRate: FrameRate, smpte: string): number;
 export declare function frameToSeconds(frameRate: FrameRate, frame: number): number;
 export declare function seekByFrames(frameRate: FrameRate, fromTimeSeconds: number, frameDelta: number): number;

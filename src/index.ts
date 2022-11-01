@@ -114,6 +114,10 @@ export function frameToSmpte(frameRate: FrameRate, frame: number) {
   return `${pad(h)}:${pad(m)}:${pad(s)}${frameSeparator}${pad(f)}`;
 }
 
+function div(dividend: number, divisor: number) {
+  return Math.floor(dividend / divisor);
+}
+
 /**
  * Return the number of extra frames required to convert drop frame to
  * SMPTE timecode.
@@ -141,7 +145,7 @@ export function extraFrames(frameRate: FrameRate, frame: number) {
     dropFrames = 4;
   }
 
-  const D = floor(frame / framesPer10Mins);
+  const D = div(frame, framesPer10Mins);
   let M = frame % framesPer10Mins;
   if (M < dropFrames) {
     // Special case for M=0 and M=1: -2 div 1798 should be 0
@@ -151,8 +155,31 @@ export function extraFrames(frameRate: FrameRate, frame: number) {
   return max(
     0,
     9 * dropFrames * D +
-      dropFrames * floor((M - dropFrames) / floor(framesPer10Mins / 10))
+      dropFrames * div(M - dropFrames, div(framesPer10Mins, 10))
   );
+}
+
+// Return the number of frames to subtract to convert smpte drop frame
+// back to frame number.
+// http://andrewduncan.net/timecodes/
+// totalMinutes = 60 * hours + minutes
+// frameNumber  = 108000 * hours + 1800 * minutes
+//                  + 30 * seconds + frames
+//                   - 2 * (totalMinutes - totalMinutes div 10)
+export function subtractFrames(frameRate: FrameRate, h: number, m: number) {
+  if (!frameRate.dropFrame) {
+    return 0;
+  }
+
+  let dropFrames = 2;
+
+  if (frameRate.rate === 60) {
+    dropFrames = 4;
+  }
+
+  const totalMinutes = h * 60 + m;
+
+  return dropFrames * (totalMinutes - div(totalMinutes, 10));
 }
 
 export function smpteToFrame(frameRate: FrameRate, smpte: string) {
@@ -174,15 +201,9 @@ export function smpteToFrame(frameRate: FrameRate, smpte: string) {
   }
 
   const seconds = h * SECONDS_PER_HOUR + m * SECONDS_PER_MINUTE + s;
-  let frames = seconds * frameRate.rate + f;
+  const frames = seconds * frameRate.rate + f;
 
-  if (frameRate.dropFrame) {
-    const dropped = extraFrames(frameRate, frames);
-
-    frames -= dropped;
-  }
-
-  return frames;
+  return frames - subtractFrames(frameRate, h, m);
 }
 
 export function frameToSeconds(frameRate: FrameRate, frame: number) {
