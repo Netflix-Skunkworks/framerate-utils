@@ -8,6 +8,7 @@ export declare const RATE_25: FrameRate;
 export declare const RATE_29_97: FrameRate;
 export declare const RATE_29_97_DROP: FrameRate;
 export declare const RATE_30: FrameRate;
+export declare const RATE_47_95: FrameRate;
 export declare const RATE_48: FrameRate;
 export declare const RATE_50: FrameRate;
 export declare const RATE_59_94: FrameRate;

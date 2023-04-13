@@ -33,6 +33,7 @@ var RATE_25 = /*#__PURE__*/create(25, 1, 1);
 var RATE_29_97 = /*#__PURE__*/create(30, 1000, 1001);
 var RATE_29_97_DROP = /*#__PURE__*/create(30, 1000, 1001, true);
 var RATE_30 = /*#__PURE__*/create(30, 1, 1);
+var RATE_47_95 = /*#__PURE__*/create(48, 1000, 1001);
 var RATE_48 = /*#__PURE__*/create(48, 1, 1);
 var RATE_50 = /*#__PURE__*/create(50, 1, 1);
 var RATE_59_94 = /*#__PURE__*/create(60, 1000, 1001);
@@ -309,6 +310,12 @@ function fromTag(tag) {
     case 'FPS_3000':
       return RATE_30;
 
+    case 'FPS_4795':
+      return RATE_47_95;
+
+    case 'FPS_48':
+      return RATE_48;
+
     case 'FPS_4800':
       return RATE_48;
 
@@ -341,6 +348,7 @@ exports.RATE_25 = RATE_25;
 exports.RATE_29_97 = RATE_29_97;
 exports.RATE_29_97_DROP = RATE_29_97_DROP;
 exports.RATE_30 = RATE_30;
+exports.RATE_47_95 = RATE_47_95;
 exports.RATE_48 = RATE_48;
 exports.RATE_50 = RATE_50;
 exports.RATE_59_94 = RATE_59_94;

@@ -1,4 +1,16 @@
 import * as FrameRate from '../src/index';
+import {
+  RATE_23_976,
+  RATE_24,
+  RATE_25,
+  RATE_29_97_DROP,
+  RATE_30,
+  RATE_47_95,
+  RATE_48,
+  RATE_50,
+  RATE_59_94_DROP,
+  RATE_60,
+} from '../src/index';
 
 describe('localization/utils/FrameRate', () => {
   it('should convert drop frame to smpte correctly', () => {
@@ -270,5 +282,24 @@ describe('localization/utils/FrameRate', () => {
 
   it('should convert SRT media media to seconds', () => {
     expect(FrameRate.mediaToSeconds('01:02:03,456')).toEqual(3723.456);
+  });
+
+  it('should support all frame rates from tag', () => {
+    expect(FrameRate.fromTag('FPS_2397')).toEqual(RATE_23_976);
+    expect(FrameRate.fromTag('FPS_24')).toEqual(RATE_24);
+    expect(FrameRate.fromTag('FPS_2400')).toEqual(RATE_24);
+    expect(FrameRate.fromTag('FPS_25')).toEqual(RATE_25);
+    expect(FrameRate.fromTag('FPS_2500')).toEqual(RATE_25);
+    expect(FrameRate.fromTag('FPS_2997')).toEqual(RATE_29_97_DROP);
+    expect(FrameRate.fromTag('FPS_30')).toEqual(RATE_30);
+    expect(FrameRate.fromTag('FPS_3000')).toEqual(RATE_30);
+    expect(FrameRate.fromTag('FPS_4795')).toEqual(RATE_47_95);
+    expect(FrameRate.fromTag('FPS_48')).toEqual(RATE_48);
+    expect(FrameRate.fromTag('FPS_4800')).toEqual(RATE_48);
+    expect(FrameRate.fromTag('FPS_50')).toEqual(RATE_50);
+    expect(FrameRate.fromTag('FPS_5000')).toEqual(RATE_50);
+    expect(FrameRate.fromTag('FPS_5994')).toEqual(RATE_59_94_DROP);
+    expect(FrameRate.fromTag('FPS_60')).toEqual(RATE_60);
+    expect(FrameRate.fromTag('FPS_6000')).toEqual(RATE_60);
   });
 });
