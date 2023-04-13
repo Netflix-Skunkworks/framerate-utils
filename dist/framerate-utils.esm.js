@@ -29,6 +29,7 @@ var RATE_25 = /*#__PURE__*/create(25, 1, 1);
 var RATE_29_97 = /*#__PURE__*/create(30, 1000, 1001);
 var RATE_29_97_DROP = /*#__PURE__*/create(30, 1000, 1001, true);
 var RATE_30 = /*#__PURE__*/create(30, 1, 1);
+var RATE_47_95 = /*#__PURE__*/create(48, 1000, 1001);
 var RATE_48 = /*#__PURE__*/create(48, 1, 1);
 var RATE_50 = /*#__PURE__*/create(50, 1, 1);
 var RATE_59_94 = /*#__PURE__*/create(60, 1000, 1001);
@@ -305,6 +306,12 @@ function fromTag(tag) {
     case 'FPS_3000':
       return RATE_30;
 
+    case 'FPS_4795':
+      return RATE_47_95;
+
+    case 'FPS_48':
+      return RATE_48;
+
     case 'FPS_4800':
       return RATE_48;
 
@@ -328,5 +335,5 @@ function fromTag(tag) {
   }
 }
 
-export { DEFAULT_FRAME_RATE, FRAME_ROUNDING, MILLISECONDS_PER_SECOND, RATE_23_976, RATE_24, RATE_25, RATE_29_97, RATE_29_97_DROP, RATE_30, RATE_48, RATE_50, RATE_59_94, RATE_59_94_DROP, RATE_60, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, TICKS_PER_SECOND, create, extraFrames, frameToMs, frameToSeconds, frameToSmpte, frameToTicks, fromTag, mediaFramesToSeconds, mediaToSeconds, msToFrame, msToSeconds, msToSmpte, secondsToFrame, secondsToMedia, secondsToMediaFrames, secondsToMs, secondsToSmpte, secondsToTicks, seekByFrames, seekToFrame, smpteToFrame, smpteToMs, smpteToSeconds, smpteToTicks, subtractFrames, ticksToFrame, ticksToSeconds, ticksToSmpte, toFrameTime };
+export { DEFAULT_FRAME_RATE, FRAME_ROUNDING, MILLISECONDS_PER_SECOND, RATE_23_976, RATE_24, RATE_25, RATE_29_97, RATE_29_97_DROP, RATE_30, RATE_47_95, RATE_48, RATE_50, RATE_59_94, RATE_59_94_DROP, RATE_60, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, TICKS_PER_SECOND, create, extraFrames, frameToMs, frameToSeconds, frameToSmpte, frameToTicks, fromTag, mediaFramesToSeconds, mediaToSeconds, msToFrame, msToSeconds, msToSmpte, secondsToFrame, secondsToMedia, secondsToMediaFrames, secondsToMs, secondsToSmpte, secondsToTicks, seekByFrames, seekToFrame, smpteToFrame, smpteToMs, smpteToSeconds, smpteToTicks, subtractFrames, ticksToFrame, ticksToSeconds, ticksToSmpte, toFrameTime };
 //# sourceMappingURL=framerate-utils.esm.js.map
