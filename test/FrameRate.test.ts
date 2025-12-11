@@ -302,4 +302,12 @@ describe('localization/utils/FrameRate', () => {
     expect(FrameRate.fromTag('FPS_60')).toEqual(RATE_60);
     expect(FrameRate.fromTag('FPS_6000')).toEqual(RATE_60);
   });
+
+  it('converts to media correctly', () => {
+    const rate = FrameRate.fromTag('FPS_2997');
+    const seconds = FrameRate.smpteToSeconds(rate, '00:53:23;00');
+    // 3202.9998
+    console.log(seconds);
+    expect(FrameRate.secondsToMedia(seconds)).toEqual('00:53:23.000');
+  });
 });
