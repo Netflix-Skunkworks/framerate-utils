@@ -237,8 +237,9 @@ function mediaToSeconds(media) {
   return seconds + ms / 1000;
 }
 function secondsToMedia(seconds) {
-  var sec = floor(seconds);
-  var ms = round((seconds - sec) * MILLISECONDS_PER_SECOND);
+  var milliseconds = round(seconds * MILLISECONDS_PER_SECOND);
+  var sec = floor(milliseconds / MILLISECONDS_PER_SECOND);
+  var ms = milliseconds % MILLISECONDS_PER_SECOND;
   var h = floor(sec / SECONDS_PER_HOUR);
   var m = floor(sec % SECONDS_PER_HOUR / SECONDS_PER_MINUTE);
   var s = floor(sec % SECONDS_PER_MINUTE);
