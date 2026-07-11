@@ -2,6 +2,7 @@ export declare const SECONDS_PER_HOUR: number;
 export declare const SECONDS_PER_MINUTE = 60;
 export declare const MILLISECONDS_PER_SECOND = 1000;
 export declare const TICKS_PER_SECOND = 10000000;
+export declare const RATE_16: FrameRate;
 export declare const RATE_23_976: FrameRate;
 export declare const RATE_24: FrameRate;
 export declare const RATE_25: FrameRate;

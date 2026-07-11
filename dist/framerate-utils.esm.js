@@ -23,6 +23,7 @@ var SECONDS_PER_HOUR = 60 * 60;
 var SECONDS_PER_MINUTE = 60;
 var MILLISECONDS_PER_SECOND = 1000;
 var TICKS_PER_SECOND = 10000000;
+var RATE_16 = /*#__PURE__*/create(16, 1, 1);
 var RATE_23_976 = /*#__PURE__*/create(24, 1000, 1001);
 var RATE_24 = /*#__PURE__*/create(24, 1, 1);
 var RATE_25 = /*#__PURE__*/create(25, 1, 1);
@@ -283,6 +284,9 @@ function secondsToMs(seconds) {
 }
 function fromTag(tag) {
   switch (tag) {
+    case 'FPS_1600':
+      return RATE_16;
+
     case 'FPS_2397':
       return RATE_23_976;
 
@@ -336,5 +340,5 @@ function fromTag(tag) {
   }
 }
 
-export { DEFAULT_FRAME_RATE, FRAME_ROUNDING, MILLISECONDS_PER_SECOND, RATE_23_976, RATE_24, RATE_25, RATE_29_97, RATE_29_97_DROP, RATE_30, RATE_47_95, RATE_48, RATE_50, RATE_59_94, RATE_59_94_DROP, RATE_60, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, TICKS_PER_SECOND, create, extraFrames, frameToMs, frameToSeconds, frameToSmpte, frameToTicks, fromTag, mediaFramesToSeconds, mediaToSeconds, msToFrame, msToSeconds, msToSmpte, secondsToFrame, secondsToMedia, secondsToMediaFrames, secondsToMs, secondsToSmpte, secondsToTicks, seekByFrames, seekToFrame, smpteToFrame, smpteToMs, smpteToSeconds, smpteToTicks, subtractFrames, ticksToFrame, ticksToSeconds, ticksToSmpte, toFrameTime };
+export { DEFAULT_FRAME_RATE, FRAME_ROUNDING, MILLISECONDS_PER_SECOND, RATE_16, RATE_23_976, RATE_24, RATE_25, RATE_29_97, RATE_29_97_DROP, RATE_30, RATE_47_95, RATE_48, RATE_50, RATE_59_94, RATE_59_94_DROP, RATE_60, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, TICKS_PER_SECOND, create, extraFrames, frameToMs, frameToSeconds, frameToSmpte, frameToTicks, fromTag, mediaFramesToSeconds, mediaToSeconds, msToFrame, msToSeconds, msToSmpte, secondsToFrame, secondsToMedia, secondsToMediaFrames, secondsToMs, secondsToSmpte, secondsToTicks, seekByFrames, seekToFrame, smpteToFrame, smpteToMs, smpteToSeconds, smpteToTicks, subtractFrames, ticksToFrame, ticksToSeconds, ticksToSmpte, toFrameTime };
 //# sourceMappingURL=framerate-utils.esm.js.map

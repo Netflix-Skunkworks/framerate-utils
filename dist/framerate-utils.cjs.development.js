@@ -27,6 +27,7 @@ var SECONDS_PER_HOUR = 60 * 60;
 var SECONDS_PER_MINUTE = 60;
 var MILLISECONDS_PER_SECOND = 1000;
 var TICKS_PER_SECOND = 10000000;
+var RATE_16 = /*#__PURE__*/create(16, 1, 1);
 var RATE_23_976 = /*#__PURE__*/create(24, 1000, 1001);
 var RATE_24 = /*#__PURE__*/create(24, 1, 1);
 var RATE_25 = /*#__PURE__*/create(25, 1, 1);
@@ -287,6 +288,9 @@ function secondsToMs(seconds) {
 }
 function fromTag(tag) {
   switch (tag) {
+    case 'FPS_1600':
+      return RATE_16;
+
     case 'FPS_2397':
       return RATE_23_976;
 
@@ -343,6 +347,7 @@ function fromTag(tag) {
 exports.DEFAULT_FRAME_RATE = DEFAULT_FRAME_RATE;
 exports.FRAME_ROUNDING = FRAME_ROUNDING;
 exports.MILLISECONDS_PER_SECOND = MILLISECONDS_PER_SECOND;
+exports.RATE_16 = RATE_16;
 exports.RATE_23_976 = RATE_23_976;
 exports.RATE_24 = RATE_24;
 exports.RATE_25 = RATE_25;
