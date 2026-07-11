@@ -1,3 +1,7 @@
+# 4.3.3
+
+- Added 16fps used by some gen-ai systems
+
 # 3.0.1
 
 - Fixed error message typo
