@@ -1,5 +1,6 @@
 import * as FrameRate from '../src/index';
 import {
+  RATE_16,
   RATE_23_976,
   RATE_24,
   RATE_25,
@@ -285,6 +286,7 @@ describe('localization/utils/FrameRate', () => {
   });
 
   it('should support all frame rates from tag', () => {
+    expect(FrameRate.fromTag('FPS_1600')).toEqual(RATE_16);
     expect(FrameRate.fromTag('FPS_2397')).toEqual(RATE_23_976);
     expect(FrameRate.fromTag('FPS_24')).toEqual(RATE_24);
     expect(FrameRate.fromTag('FPS_2400')).toEqual(RATE_24);

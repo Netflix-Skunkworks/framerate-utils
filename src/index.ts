@@ -7,6 +7,7 @@ export const SECONDS_PER_MINUTE = 60;
 export const MILLISECONDS_PER_SECOND = 1000;
 export const TICKS_PER_SECOND = 10000000;
 
+export const RATE_16 = create(16, 1, 1);
 export const RATE_23_976 = create(24, 1000, 1001);
 export const RATE_24 = create(24, 1, 1);
 export const RATE_25 = create(25, 1, 1);
@@ -305,6 +306,8 @@ export function secondsToMs(seconds: number) {
 
 export function fromTag(tag: string) {
   switch (tag) {
+    case 'FPS_1600':
+      return RATE_16;
     case 'FPS_2397':
       return RATE_23_976;
     case 'FPS_24':
